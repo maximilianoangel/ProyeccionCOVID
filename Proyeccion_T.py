@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
-# Semilla = 100
+Semilla = 7
 
 def indice_saturacion(CS, SS, indice_region, region, indice_fin_entrenamiento, cantidad_dias_entrenamiento):
     Indice = []
@@ -29,37 +29,43 @@ def indice_saturacion(CS, SS, indice_region, region, indice_fin_entrenamiento, c
     return Indice, mediana
 
 def proyeccion(CS, SS, indice_region, region, cantidad_dias_proyectados, mediana, indice_saturacion, indice_fin_entrenamiento, promedio_regiones):
-    # global Semilla
+    global Semilla
     Casos_nuevos = []
     Casos_reales = []
     Error = []
     Porcentaje = []
     for i in range(0, cantidad_dias_proyectados):
         if len(Casos_nuevos) == 0:
-            # random.seed(Semilla)
+            Semilla += 1
+            random.seed(Semilla)
             if random.random() < 0.7:
                 Casos_nuevos.append(round((CS[indice_fin_entrenamiento][indice_region + 1] + SS[indice_fin_entrenamiento][indice_region + 1]) * mediana))
             else:
-                # random.seed(Semilla + i)
+                Semilla += 1
+                random.seed(Semilla)
                 aux = random.choice(indice_saturacion)
                 while True:
                     if aux > promedio_regiones[indice_region] * 1.2 or aux < promedio_regiones[indice_region] * 0.8:
-                        # random.seed(Semilla + i)
+                        Semilla += 1
+                        random.seed(Semilla)
                         aux = random.choice(indice_saturacion)
                     else:
                         break
                 # print(f"i: {i} - {aux}")
                 Casos_nuevos.append(round((CS[indice_fin_entrenamiento][indice_region + 1] + SS[indice_fin_entrenamiento][indice_region + 1]) * aux))
         else:
-            # random.seed(Semilla + i)
+            Semilla += 1
+            random.seed(Semilla)
             if random.random() < 0.7:
                 Casos_nuevos.append(round(Casos_nuevos[i-1] * mediana))
             else:
-                # random.seed(Semilla + i)
+                Semilla += 1
+                random.seed(Semilla)
                 aux = random.choice(indice_saturacion)
                 while True:
                     if aux > promedio_regiones[indice_region] * 1.2 or aux < promedio_regiones[indice_region] * 0.8:
-                        # random.seed(Semilla + i)
+                        Semilla += 1
+                        random.seed(Semilla)
                         aux = random.choice(indice_saturacion)
                     else:
                         break
