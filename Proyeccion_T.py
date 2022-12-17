@@ -127,5 +127,6 @@ for i in range(0, len(Regiones)):
 #     print(Regiones[l], promedio_regiones[l])
 
 for p in range(0, len(Regiones)):
-    print(f"region: {p}")
+    print(f"region: {Regiones[p]}")
     solucion(CS_out, SS_out, p, Regiones, Indice_fecha_fin_entrenamiento, Cantidad_dias_entrenamiento, Cantidad_dias_proyectados, promedio_regiones)
+    print("----------------------------------------")
