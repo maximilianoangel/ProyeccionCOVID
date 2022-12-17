@@ -48,7 +48,7 @@ def proyeccion(CS, SS, indice_region, region, cantidad_dias_proyectados, mediana
                         aux = random.choice(indice_saturacion)
                     else:
                         break
-                print(f"i: {i} - {aux}")
+                # print(f"i: {i} - {aux}")
                 Casos_nuevos.append(round((CS[indice_fin_entrenamiento][indice_region + 1] + SS[indice_fin_entrenamiento][indice_region + 1]) * aux))
         else:
             # random.seed(Semilla + i)
@@ -63,7 +63,7 @@ def proyeccion(CS, SS, indice_region, region, cantidad_dias_proyectados, mediana
                         aux = random.choice(indice_saturacion)
                     else:
                         break
-                print(f"i: {i} - {aux}")
+                # print(f"i: {i} - {aux}")
                 Casos_nuevos.append(round(Casos_nuevos[i-1] * aux))
         Casos_reales.append(CS[indice_fin_entrenamiento + i + 1][indice_region + 1] + SS[indice_fin_entrenamiento + i + 1][indice_region + 1])
     
@@ -127,4 +127,5 @@ for i in range(0, len(Regiones)):
 #     print(Regiones[l], promedio_regiones[l])
 
 for p in range(0, len(Regiones)):
+    print(f"region: {p}")
     solucion(CS_out, SS_out, p, Regiones, Indice_fecha_fin_entrenamiento, Cantidad_dias_entrenamiento, Cantidad_dias_proyectados, promedio_regiones)
