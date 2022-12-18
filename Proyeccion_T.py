@@ -15,17 +15,15 @@ def CalculoCamas(arreglo_camas,casos,indice,region,indice_x):
         casos=x[indice_x]
         aux=((camasCovid*casos)/((1-(camasCovid/camasTotales))*camasTotales))
         if 0.9>= aux:
+            print(camasTotales)
             break
         camasTotales=camasTotales+1
-
     return aux, camasTotales
 
 def sat(arreglo_camas,casos,indice,region,indice_x):
     camasCovid=arreglo_camas[region+17][indice]
     camas=arreglo_camas[region][indice]
-    casos=x[indice_x]
-    saturacion=((camasCovid*casos)/((1-(camasCovid/camas))*camas))
-
+    saturacion=((camasCovid*casos[indice_x])/((1-(camasCovid/camas))*camas))
     return saturacion
 
 
@@ -183,54 +181,65 @@ fecha=[]
 camasA=[]
 indice_sat=[]
 camas_reales=[]
-region=14
+region=8
 saturacion_real=[]
 indice=913
 #Casos reales
-x,casos_reales=solucion(CS_out, SS_out, region, Regiones, Indice_fecha_fin_entrenamiento, Cantidad_dias_entrenamiento, Cantidad_dias_proyectados, promedio_regiones)
-while j<len(x):
-    fecha.append(date[913+j])
-    j=j+1
-i=0
-while i<len(x):
-    satu=sat(prueba_out,casos_reales,indice,region,i)
-    saturacion_real.append(satu)
-    camas_reales.append(int(prueba_out[region][913+i]))
-    aux,camas=CalculoCamas(prueba_out,x,indice,region,i)
-    indice_sat.append(aux)
-    camasA.append(int(camas))
-    i=i+1
-    indice=indice+1
+# x,casos_reales=solucion(CS_out, SS_out, region, Regiones, Indice_fecha_fin_entrenamiento, Cantidad_dias_entrenamiento, Cantidad_dias_proyectados, promedio_regiones)
+# while j<len(x):
+#     fecha.append(date[913+j])
+#     j=j+1
+# i=0
+# while i<len(x):
+#     satu=sat(prueba_out,casos_reales,indice,region,i)
+#     saturacion_real.append(satu)
+#     camas_reales.append(int(prueba_out[region][913+i]))
+#     aux,camas=CalculoCamas(prueba_out,x,indice,region,i)
+#     indice_sat.append(aux)
+#     camasA.append(int(camas))
+#     i=i+1
+#     indice=indice+1
 # print(camasA)
+# print(saturacion_real)
+# print(saturacion_real)
 # print(indice_sat)
-# print(fecha)
+nombre_regiones = ["Arica y Parinacota", "Tarapacá", "Antofagasta", "Atacama", "Coquimbo", "Valparaíso", "Metropolitana", "O'Higgins", "Maule", "Ñuble", "Biobío", "Araucanía", "Los Ríos", "Los Lagos", "Aysén", "Magallanes"]
 
-plt.xlabel('Fecha')
-plt.ylabel('Examenes realizados')
-plt.title('Examenes PCR en la region de Magallanes')
-#y = [0.0, 0.0, 0.0009999275207519531, 0.0, 0.008999824523925781, 0.003998517990112305, 0.012002229690551758, 0.006997346878051758, 0.041018009185791016, 0.017998933792114258, 0.39300012588500977, 0.3229970932006836, 2.677995443344116, 1.6149992942810059, 13.948997259140015, 0.9549975395202637, 83.28399729728699, 3.9170007705688477, 873.6389403343201]
-#fech=[datetime.strptime(date, "%Y-%m-%d").date() for date in fecha]
+region=0
+for aux2 in nombre_regiones:
+    j=0
+    fecha=[]
+    camasA=[]
+    indice_sat=[]
+    camas_reales=[]
+    saturacion_real=[]
+    indice=913
+    while j<10:
+        fecha.append(date[913+j])
+        j=j+1
+    i=0
+    while i<10:
+        x,casos_reales=solucion(CS_out, SS_out, region, Regiones, Indice_fecha_fin_entrenamiento, Cantidad_dias_entrenamiento, Cantidad_dias_proyectados, promedio_regiones)
+        satu=sat(prueba_out,casos_reales,indice,region,i)
+        saturacion_real.append(satu)
+        camas_reales.append(int(prueba_out[region][913+i]))
+        aux,camas=CalculoCamas(prueba_out,x,indice,region,i)
+        indice_sat.append(aux)
+        camasA.append(int(camas))
+        i=i+1
+        indice=indice+1
+    region=region+1
+    plt.xlabel('Fecha')
+    plt.ylabel('Numero de casos COVID')
+    plt.title(f'Casos de COVID en la región {aux2}')
+    #y = [0.0, 0.0, 0.0009999275207519531, 0.0, 0.008999824523925781, 0.003998517990112305, 0.012002229690551758, 0.006997346878051758, 0.041018009185791016, 0.017998933792114258, 0.39300012588500977, 0.3229970932006836, 2.677995443344116, 1.6149992942810059, 13.948997259140015, 0.9549975395202637, 83.28399729728699, 3.9170007705688477, 873.6389403343201]
+    #fech=[datetime.strptime(date, "%Y-%m-%d").date() for date in fecha]
 
-#x = [4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22]
-plt.plot(fecha, x,label='Casos proyectados')
-plt.plot(fecha, casos_reales,label='Casos reales')
-plt.legend()
-plt.gcf().set_size_inches(18, 7)
-plt.grid(True, linestyle="-.",c="gray")
-plt.savefig('casosVSmagallanes.png')
-plt.show()
-
-# x = np.linspace(0, 2, 100)
-# #Generamos una grafica lineal para una recta en X
-# plt.plot(x, x, label='linear')
-# #Generamos otra grafica lineal para una X cuadratica
-# plt.plot(x, x**2, label='quadratic')
-# #Generamos una grafica lineas para una X Cubica
-# plt.plot(x, x**3, label='cubic')
-# #Agregamos las etiquetas y añadimos una leyenda.
-# plt.xlabel('Indice de saturacion')
-# plt.ylabel('Fecha')
-# plt.title("Indice de saturacion en la region Arica y Parinacota")
-# plt.legend()
-# # plt.savefig('grafica_lineal.png')
-# plt.show()
+    #x = [4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22]
+    plt.plot(fecha, camas_reales,label='Casos Reales')
+    plt.plot(fecha, camasA,label='Casos proyectados')
+    plt.legend()
+    plt.gcf().set_size_inches(18, 7)
+    plt.grid(True, linestyle="-.",c="gray")
+    plt.savefig(f'CasosVS{aux2}.png')
+    plt.show()
